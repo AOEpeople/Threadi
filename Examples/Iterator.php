@@ -25,12 +25,12 @@ class Worker {
 }
 
 /**
- * Simple collection that gets filled with 1000 random numbers
+ * Simple collection that gets filled with random numbers
  */
 class Collection implements Iterator {
 	protected $position = 0;
 	protected $array = array();
-	public function __construct() { for ($i=0; $i<1000; $i++) { $this->array[] = rand(0,10000); }}
+	public function __construct($size=100) { for ($i=0; $i<$size; $i++) { $this->array[] = rand(0,10000); }}
 	public function rewind() { $this->position = 0; }
 	public function current() { return $this->array[$this->position]; }
 	public function key() { return $this->position; }
@@ -60,4 +60,6 @@ while ($collection->valid()) {
 
 	$collection->next();
 }
+
+$pool->waitTillAllReady();
 

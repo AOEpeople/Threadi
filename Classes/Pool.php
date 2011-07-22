@@ -77,6 +77,17 @@ class Threadi_Pool implements Threadi_ReadyAskableInterface {
 	}
 
 	/**
+	 * Wait until all threads are ready
+	 *
+	 * @return void
+	 */
+	public function waitTillAllReady() {
+		while(!$this->isAllReady()) {
+			sleep($this->sleepBetweenChecks);
+		}
+	}
+
+	/**
 	 * Check if this pool has some capacity left
 	 *
 	 * @return bool
@@ -84,5 +95,15 @@ class Threadi_Pool implements Threadi_ReadyAskableInterface {
 	public function isReady() {
 		$this->checkAlive();
 		return ($this->countThreads() < $this->capacity);
+	}
+
+	/**
+	 * Check if this pool has some capacity left
+	 *
+	 * @return bool
+	 */
+	public function isAllReady() {
+		$this->checkAlive();
+		return ($this->countThreads() == 0);
 	}
 }
