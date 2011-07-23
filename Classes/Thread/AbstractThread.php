@@ -57,7 +57,7 @@ class Threadi_Thread_AbstractThread {
 	 * Check if argument is a valid callback
 	 *
 	 * @param mixed $callback
-	 * @return boolen
+	 * @return bool
 	 */
 	protected function isValidCallback($callback) {
 		return is_callable($callback);

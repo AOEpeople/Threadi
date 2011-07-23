@@ -18,13 +18,10 @@ class Threadi_Thread_PHPThread extends Threadi_Thread_AbstractThread implements 
 	 * @param mixed $callback
 	 */
 	public function __construct($callback = NULL) {
-		if (! function_exists('pcntl_fork'))
+		if (! function_exists('pcntl_fork')) {
 			throw new Exception('PCNTL functions not available on this PHP installation');
-		if (! $this->isValidCallback($callback)) {
-			throw new Exception('No valid callback given');
 		}
-		$this->callback = $callback;
-		$this->parentId = getmypid();
+		parent::__construct($callback);
 	}
 
 	/**
