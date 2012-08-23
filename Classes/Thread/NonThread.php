@@ -58,7 +58,7 @@ class Threadi_Thread_NonThread extends Threadi_Thread_AbstractThread implements 
 	 * @return mixed
 	 */
 	public function getResult() {
-		return $result = null;
+		return $this->result;
 	}
 
 	/**
@@ -67,6 +67,7 @@ class Threadi_Thread_NonThread extends Threadi_Thread_AbstractThread implements 
 	 * @return void
 	 */
 	public function waitTillReady() {
+		return;
 	}
 
 }
