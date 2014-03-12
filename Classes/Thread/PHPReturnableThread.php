@@ -25,7 +25,7 @@ class Threadi_Thread_PHPReturnableThread extends Threadi_Thread_PHPThread implem
 	 * starts the thread, all the parameters are
 	 * passed to the callback function
 	 *
-	 * @return void
+	 * @throws Exception
 	 */
 	public function start() {
 		if (! isset($this->communication)) {
@@ -47,7 +47,12 @@ class Threadi_Thread_PHPReturnableThread extends Threadi_Thread_PHPThread implem
 				$this, 'signalHandler'
 			));
 			$this->communication->set('result', $this->executeCallback($this->callback, func_get_args()));
-			exit(0);
+			if ($this->killSelfOnExit) {
+				// avoid Exception: Thread was not started yet!
+				posix_kill(getmypid(), SIGKILL);
+			} else {
+				exit(0);
+			}
 		}
 	}
 
@@ -82,6 +87,3 @@ class Threadi_Thread_PHPReturnableThread extends Threadi_Thread_PHPThread implem
 		return (getmypid() == $this->parentId);
 	}
 }
-
-
-

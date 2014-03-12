@@ -12,26 +12,34 @@ class Threadi_Thread_AbstractThread {
 	protected $callback;
 
 	/**
+	 * @var bool
+	 */
+	protected $killSelfOnExit;
+
+	/**
 	 * @var integer
 	 */
 	protected $threadId;
 
 	/**
-	 * @var booleam
+	 * @var bool
 	 */
 	protected $started = FALSE;
 
 	/**
 	 * Constructor
 	 *
-	 * @param mixed $callback
+	 * @param callback $callback
+	 * @param bool $killSelfOnExit
+	 * @throws Exception
 	 */
-	public function __construct($callback = NULL) {
+	public function __construct($callback = NULL, $killSelfOnExit = FALSE) {
 		if (! $this->isValidCallback($callback)) {
 			throw new Exception('No valid callback given');
 		}
-		$this->callback = $callback;
-		$this->parentId = getmypid();
+		$this->callback       = $callback;
+		$this->killSelfOnExit = $killSelfOnExit;
+		$this->parentId       = getmypid();
 	}
 
 	/**
@@ -46,8 +54,6 @@ class Threadi_Thread_AbstractThread {
 
 	/**
 	 * Check if this thread is ready
-	 *
-	 * @return void
 	 */
 	public function isReady() {
 		return $this->isAlive();
@@ -67,7 +73,7 @@ class Threadi_Thread_AbstractThread {
 	 * Checks if thread was started - if not throw exception
 	 * (needs call from parent)
 	 *
-	 * @return void
+	 * @throws Exception
 	 */
 	protected function requireStart() {
 		if (! $this->started) {
@@ -90,6 +96,3 @@ class Threadi_Thread_AbstractThread {
 		}
 	}
 }
-
-
-

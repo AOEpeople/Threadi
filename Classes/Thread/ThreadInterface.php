@@ -7,9 +7,10 @@
 interface Threadi_Thread_ThreadInterface extends Threadi_ReadyAskableInterface {
 
 	/**
-	 * @param mixed $callback
+	 * @param callback $callback
+	 * @param bool $killSelfOnExit
 	 */
-	public function __construct($callback = NULL);
+	public function __construct($callback = NULL, $killSelfOnExit = FALSE);
 
 	/**
 	 * @return int

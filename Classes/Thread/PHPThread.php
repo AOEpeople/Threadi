@@ -15,13 +15,15 @@ class Threadi_Thread_PHPThread extends Threadi_Thread_AbstractThread implements 
 	/**
 	 * Constructor
 	 *
-	 * @param mixed $callback
+	 * @param callback $callback
+	 * @param bool $killSelfOnExit
+	 * @throws Exception
 	 */
-	public function __construct($callback = NULL) {
+	public function __construct($callback = NULL, $killSelfOnExit = FALSE) {
 		if (! function_exists('pcntl_fork')) {
 			throw new Exception('PCNTL functions not available on this PHP installation');
 		}
-		parent::__construct($callback);
+		parent::__construct($callback, $killSelfOnExit);
 	}
 
 	/**
@@ -39,7 +41,7 @@ class Threadi_Thread_PHPThread extends Threadi_Thread_AbstractThread implements 
 	 * Starts the thread, all the parameters are
 	 * passed to the callback function
 	 *
-	 * @return void
+	 * @throws Exception
 	 */
 	public function start() {
 		$id = pcntl_fork();
@@ -59,7 +61,12 @@ class Threadi_Thread_PHPThread extends Threadi_Thread_AbstractThread implements 
 			));
 			$args = func_get_args();
 			$this->executeCallback($this->callback, $args);
-			exit(0);
+			if ($this->killSelfOnExit) {
+				// avoid Exception: Thread was not started yet!
+				posix_kill(getmypid(), SIGKILL);
+			} else {
+				exit(0);
+			}
 		}
 	}
 
@@ -95,7 +102,7 @@ class Threadi_Thread_PHPThread extends Threadi_Thread_AbstractThread implements 
 	/**
 	 * Signal handler
 	 *
-	 * @param integer $_signal
+	 * @param integer $signal
 	 */
 	protected function signalHandler($signal) {
 		switch ($signal) {
@@ -104,17 +111,4 @@ class Threadi_Thread_PHPThread extends Threadi_Thread_AbstractThread implements 
 				break;
 		}
 	}
-
-	/**
-	 * Cleanup
-	 *
-	 * @return void
-	 */
-	private function cleanup() {
-		shmop_delete($this->memoryId);
-		shmop_close($this->memoryId);
-	}
 }
-
-
-
