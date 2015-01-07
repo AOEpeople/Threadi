@@ -2,7 +2,7 @@
     "name": "aoepeople/threadi",
     "description": "Set of PHP classed for multi processing and threading in PHP 5",
     "license": "GPL-3.0",
-    "type": "library",
+    "type": "magento-library",
     "homepage": "https://github.com/AOEpeople/Threadi",
     "require": {
         "composer/installers": "*"
