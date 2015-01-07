@@ -1,0 +1,7 @@
+{
+    "name": "aoepeople/threadi",
+    "description": "Set of PHP classed for multi processing and threading in PHP 5",
+    "license": "GNU",
+    "type": "magento-module",
+    "homepage": "https://github.com/AOEpeople/Threadi"
+}
